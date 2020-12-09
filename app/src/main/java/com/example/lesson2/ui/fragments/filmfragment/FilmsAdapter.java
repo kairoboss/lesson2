@@ -1,25 +1,24 @@
 package com.example.lesson2.ui.fragments.filmfragment;
 
-import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.lesson2.App;
 import com.example.lesson2.R;
 import com.example.lesson2.data.models.Film;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmViewHolder> {
-    private Film film;
     private List<Film> filmList;
-    private Context context;
     private FilmCallback callback;
 
     
@@ -51,13 +50,22 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmViewHold
 
     class FilmViewHolder extends RecyclerView.ViewHolder{
         private TextView title;
+        private Button addFav;
         public FilmViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.item_title);
+            addFav = itemView.findViewById(R.id.btn_add_fav);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callback.clicked(getAdapterPosition());
+                    callback.onItemClick(getAdapterPosition());
+                }
+            });
+            addFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.onFavoriteClick(getAdapterPosition());
+                    addFav.setBackgroundResource(R.drawable.ic_fav_selected);
                 }
             });
         }
@@ -68,13 +76,8 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmViewHold
             title.setText(film.getTitle());
         }
     }
-    public void addList(List<Film> list){
-        filmList = new ArrayList<>();
-        filmList.clear();
-        filmList.addAll(list);
-        notifyDataSetChanged();
-    }
     public interface FilmCallback{
-        void clicked(int pos);
+        void onItemClick(int pos);
+        void onFavoriteClick(int pos);
     }
 }

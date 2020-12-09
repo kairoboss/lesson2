@@ -7,18 +7,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.example.lesson2.App;
 import com.example.lesson2.R;
 import com.example.lesson2.data.models.Film;
 import com.example.lesson2.data.network.GhibliService;
+import com.example.lesson2.databinding.FragmentFilmsBinding;
 import com.example.lesson2.ui.fragments.detailfragment.DetailFragment;
 import com.example.lesson2.ui.fragments.filmfragment.FilmsAdapter;
 
@@ -33,38 +39,33 @@ public class FilmsFragment extends Fragment implements FilmsAdapter.FilmCallback
     private NavController navController;
     private static final String ARG_PARAM1 = "details";
     private FilmsAdapter filmsAdapter;
+    private FragmentFilmsBinding binding;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-
-    public static FilmsFragment newInstance(Film film) {
-        FilmsFragment fragment = new FilmsFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, film.getId());
-        fragment.setArguments(args);
-        return fragment;
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_films, container, false);
+        binding = FragmentFilmsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initList(view);
+
     }
 
     private void initList(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.films_recycler);
         List<Film> list = new ArrayList<>();
         filmsAdapter = new FilmsAdapter(list, this);
-        recyclerView.setAdapter(filmsAdapter);
+        binding.filmsRecycler.setAdapter(filmsAdapter);
 
 
         GhibliService.getInstance().getAllFilms().enqueue(new Callback<List<Film>>() {
@@ -79,17 +80,37 @@ public class FilmsFragment extends Fragment implements FilmsAdapter.FilmCallback
 
             @Override
             public void onFailure(Call<List<Film>> call, Throwable t) {
-                Log.e("tag", "Failed");
+                Log.e("tag", t.getLocalizedMessage());
             }
         });
 
     }
 
     @Override
-    public void clicked(int pos) {
+    public void onItemClick(int pos) {
         Bundle b = new Bundle();
+        b.putLong("roomId",filmsAdapter.getItem(pos).getRoomId());
         b.putString("filmId", filmsAdapter.getItem(pos).getId());
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navController.navigate(R.id.action_filmsFragment_to_detailFragment, b);
+    }
+
+    @Override
+    public void onFavoriteClick(int pos) {
+        App.getDataBase().filmDao().addFavourite(filmsAdapter.getItem(pos));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.favorites){
+            navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.action_filmsFragment_to_favoriteFragment);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.film_menu, menu);
     }
 }

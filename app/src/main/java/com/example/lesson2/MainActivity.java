@@ -6,6 +6,7 @@ import androidx.navigation.Navigation;
 
 import android.os.Bundle;
 import android.util.Log;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.lesson2.data.models.Film;
 import com.example.lesson2.data.network.GhibliService;
@@ -17,17 +18,18 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private NavController navController;
 
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initNavController();
-
+        initToolBar();
     }
 
-    private void initNavController() {
+    private void initToolBar() {
+        toolbar = findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
     }
 
 

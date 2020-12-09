@@ -1,13 +1,18 @@
 
 package com.example.lesson2.data.models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@Entity
 public class Film implements Serializable {
 
+    @PrimaryKey(autoGenerate = true)
+    private long roomId;
     @SerializedName("id")
     @Expose
     private String id;
@@ -29,24 +34,10 @@ public class Film implements Serializable {
     @SerializedName("rt_score")
     @Expose
     private String rtScore;
-    @SerializedName("people")
-    @Expose
-    private List<String> people = null;
-    @SerializedName("species")
-    @Expose
-    private List<String> species = null;
-    @SerializedName("locations")
-    @Expose
-    private List<String> locations = null;
-    @SerializedName("vehicles")
-    @Expose
-    private List<String> vehicles = null;
     @SerializedName("url")
     @Expose
     private String url;
-    @SerializedName("length")
-    @Expose
-    private Object length;
+
 
     public String getId() {
         return id;
@@ -104,37 +95,6 @@ public class Film implements Serializable {
         this.rtScore = rtScore;
     }
 
-    public List<String> getPeople() {
-        return people;
-    }
-
-    public void setPeople(List<String> people) {
-        this.people = people;
-    }
-
-    public List<String> getSpecies() {
-        return species;
-    }
-
-    public void setSpecies(List<String> species) {
-        this.species = species;
-    }
-
-    public List<String> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<String> locations) {
-        this.locations = locations;
-    }
-
-    public List<String> getVehicles() {
-        return vehicles;
-    }
-
-    public void setVehicles(List<String> vehicles) {
-        this.vehicles = vehicles;
-    }
 
     public String getUrl() {
         return url;
@@ -144,12 +104,11 @@ public class Film implements Serializable {
         this.url = url;
     }
 
-    public Object getLength() {
-        return length;
+    public long getRoomId() {
+        return roomId;
     }
 
-    public void setLength(Object length) {
-        this.length = length;
+    public void setRoomId(long roomId) {
+        this.roomId = roomId;
     }
-
 }
