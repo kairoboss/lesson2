@@ -6,4 +6,9 @@
         android:title="Favorites"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_favorite" />
+    <item
+        android:id="@+id/scan_qr_code"
+        android:title="Scan qr code"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_scan_qr_code"/>
 </menu>

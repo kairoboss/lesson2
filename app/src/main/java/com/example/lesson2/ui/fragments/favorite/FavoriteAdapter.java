@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             favTitle = itemView.findViewById(R.id.fav_title);
             itemView.setOnClickListener(v -> callback.onItemClick(getAdapterPosition()));
             unFavBtn.setOnClickListener(v -> callback.onFavoriteClick(getAdapterPosition()));
+
         }
         public void bind(Film film){
             favTitle.setText(film.getTitle());

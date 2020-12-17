@@ -86,7 +86,7 @@ public class DetailFragment extends Fragment {
                     binding.tvTitle.setText("title: " + film.getTitle());
                     binding.tvDescription.setText("description: " + film.getDescription());
                     binding.tvDirector.setText("director: " + film.getDirector());
-                    binding.tvProducer.setText("producer: " + film.getProducer());
+                      binding.tvProducer.setText("producer: " + film.getProducer());
                     binding.releaseDate.setText("release date: " + film.getReleaseDate());
                     binding.rtScore.setText("rtScore: " + film.getRtScore());
                 }
